@@ -7,16 +7,13 @@ import customExceptions.wrongSumOfPosibilitiesException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.shape.Line;
 
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class sceneController {
@@ -49,27 +46,19 @@ public class sceneController {
     @FXML
     private BarChart barChart;
 
-
-
-    int[] intervalOfNumbers;
     int interval=0;
-    int[] vectorOfProbabilities;
     int labelId;
     boolean isPlottable= false;
     generatorModel generator;
 
-
-
-
-
     public void submit(ActionEvent event){
         isPlottable=false;
         try{
+            generator = new generatorModel();
             getIntervalNumbers();
             getVectorOfProbabilities();
             if(isPlottable){
-                generator = new generatorModel();
-                generator.generateRandomNumbers(intervalOfNumbers, vectorOfProbabilities );
+                generator.generateRandomNumbers();
                 plotPage.toFront();
                 drawChart();
             }
@@ -115,17 +104,16 @@ public class sceneController {
     private void getIntervalNumbers()throws notPositiveNumberException, wrongAmountOfValuesException, wrongIntervalException {
         labelId=1;
         //conversion from string to Int, with extracting values with comma
-        intervalOfNumbers = Arrays.stream(intervalAmountField.getText().split(",")).mapToInt(Integer::parseInt).toArray();
-        if(intervalOfNumbers.length != 2)
+        generator.setIntervalOfNumbers(Arrays.stream(intervalAmountField.getText().split(",")).mapToInt(Integer::parseInt).toArray());
+        if(generator.getIntervalOfNumbers().length != 2)
         {
             throw new wrongAmountOfValuesException("equal to 2");
         }
-        if(intervalOfNumbers[0] <= 0 || intervalOfNumbers[1] <=0){
+        if(generator.getStrictIntervalOfNumbers(0) <= 0 || generator.getStrictIntervalOfNumbers(1) <=0){
             throw new notPositiveNumberException();
         }
-        System.out.println(intervalOfNumbers[0]);
-        System.out.println(intervalOfNumbers[1]);
-        interval=intervalOfNumbers[1]-intervalOfNumbers[0] +1;
+        //calculating interval, interval ahve to be bigger than 0
+        interval=generator.getStrictIntervalOfNumbers(1)-generator.getStrictIntervalOfNumbers(0) +1;
         if(interval <=0 ){
             throw new wrongIntervalException();
         }
@@ -135,28 +123,28 @@ public class sceneController {
 
     private void getVectorOfProbabilities()throws notPositiveNumberException, wrongAmountOfValuesException, wrongSumOfPosibilitiesException {
         labelId=3;
-        vectorOfProbabilities = Arrays.stream(probabilitiesVectorField.getText().split(",")).mapToInt(Integer::parseInt).toArray();
-        for(int i =0 ; i < vectorOfProbabilities.length; i++){
-            if(vectorOfProbabilities[i] <= 0){
+        //vectorOfProbabilities = Arrays.stream(probabilitiesVectorField.getText().split(",")).mapToInt(Integer::parseInt).toArray();
+        generator.setPossibilitiesOfNumber(Arrays.stream(probabilitiesVectorField.getText().split(",")).mapToInt(Integer::parseInt).toArray());
+        for(int i =0 ; i < generator.getPossibilitiesOfNumber().length; i++){
+            if(generator.getStrictPossibilitiesOfNumber(i) <= 0){
                 throw new notPositiveNumberException();
             }
         }
-        if(vectorOfProbabilities.length > interval){
-            System.out.println(vectorOfProbabilities.length);
+        if(generator.getPossibilitiesOfNumber().length > interval){
             throw new wrongAmountOfValuesException(String.valueOf("smaller than " + interval));
         }
-        if(IntStream.of(vectorOfProbabilities).sum() != 100){
+        if(IntStream.of(generator.getPossibilitiesOfNumber()).sum() != 100){
             throw new wrongSumOfPosibilitiesException();
         }
         isPlottable = true;
-        intervalErrorLabel.setText("");
+        probabilitiesErrorLabel.setText("");
     }
 
     public void drawChart(){
         XYChart.Series series = new XYChart.Series();
         barChart.setLegendVisible(false);
         barChart.setAnimated(false);
-        SortedMap<Integer, String> tm2 = generator.getTm2();
+        SortedMap<Integer, String> tm2 = generator.getDistributionValuesMap();
 
         for(Map.Entry m:tm2.entrySet())
         {
