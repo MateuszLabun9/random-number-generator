@@ -149,7 +149,7 @@ public class sceneController {
         for(Map.Entry m:tm2.entrySet())
         {
             int value = Integer.parseInt((String) m.getValue());
-            series.getData().add(new XYChart.Data(String.valueOf(m.getKey()), value*0.01));
+            series.getData().add(new XYChart.Data(String.valueOf(m.getKey()), value*0.000001));
         }
         barChart.getData().addAll(series);
     }

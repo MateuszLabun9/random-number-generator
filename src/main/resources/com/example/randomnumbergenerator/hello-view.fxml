@@ -115,7 +115,7 @@
                                  </font>
                               </Label>
                               <TextField fx:id="intervalAmountField" alignment="CENTER" prefHeight="25.0" prefWidth="297.0" style="-fx-background-radius: 20; -fx-background-color: #;" />
-                              <Label fx:id="intervalErrorLabel" text="errorLabel" textFill="#fc0303" />
+                              <Label fx:id="intervalErrorLabel" textFill="#fc0303" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" layoutX="262.0" layoutY="248.0" prefHeight="232.0" prefWidth="280.0" spacing="10.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
@@ -129,7 +129,7 @@
                                  </font>
                               </Label>
                               <TextField fx:id="probabilitiesVectorField" alignment="CENTER" prefHeight="25.0" prefWidth="200.0" style="-fx-background-radius: 20;" />
-                              <Label fx:id="probabilitiesErrorLabel" text="errorLabel" textFill="#ff0404" />
+                              <Label fx:id="probabilitiesErrorLabel" textFill="#ff0404" />
                            </children>
                         </VBox>
                      </children>

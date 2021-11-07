@@ -7,7 +7,15 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Main class which is creating a new scene and stage.
+ */
 public class RandomNumberGenerator extends Application {
+    /**
+     *
+     * @param stage main stage on which view objects will base on.
+     * @throws IOException In case of any exception, throws an error.
+     */
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(RandomNumberGenerator.class.getResource("hello-view.fxml"));
@@ -17,6 +25,10 @@ public class RandomNumberGenerator extends Application {
         stage.show();
     }
 
+    /**
+     *
+     * @param args arguments used when launching main function.
+     */
     public static void main(String[] args) {
         launch();
     }
