@@ -16,41 +16,73 @@ import javafx.scene.layout.BorderPane;
 import java.util.*;
 import java.util.stream.IntStream;
 
+/**
+ * The main Scene controller. Dealing with user input and checking if it is correct.
+ * Plotting bar chart and switching between scenes.
+ *
+ * @see generatorModel
+ * @see RandomNumberGenerator
+ */
 public class sceneController {
-    @FXML
-    private Label welcomeLabel;
-    @FXML
-    private Label intervalLabel;
+    /**
+     * Label used to inform user about user input error. Specific description is printed when error occurs.
+     */
     @FXML
     private Label intervalErrorLabel;
-    @FXML
-    private Label amountLabel;
-    @FXML
-    private Label amountErrorLabel;
-    @FXML
-    private Label probabilitiesLabel;
+    /**
+     * Label used to inform user about user input error. Specific description is printed when error occurs.
+     */
     @FXML
     private Label probabilitiesErrorLabel;
+    /**
+     * FXML input text field used for inserting interval.
+     */
     @FXML
     private TextField intervalAmountField;
-    @FXML
-    private TextField numbersAmountField;
+    /**
+     * FXML input text field used for inserting probabilities.
+     */
     @FXML
     private TextField probabilitiesVectorField;
-    @FXML
-    private Button submitBtn;
+    /**
+     * FXML BorderPane this is main screen, on which user is inserting values.
+     */
     @FXML
     private BorderPane mainPage;
+    /**
+     * FXML BorderPane this is second screen, on which the bar chart is drawn.
+     */
     @FXML
     private BorderPane plotPage;
+    /**
+     * FXML BarChart which presents generated values.
+     */
     @FXML
     private BarChart barChart;
 
+    /**
+     * The Interval variable used for check if passed interval is correct.
+     */
     int interval=0;
+    /**
+     * The Label id decides which error label will be changed.
+     */
     int labelId;
+    /**
+     * The Is plottable value, when all requirements are fullfiled change value to true.
+     */
     boolean isPlottable= false;
+    /**
+     * The Generator object.
+     */
     generatorModel generator;
 
+    /**
+     * Method that is invoked after pressing submit button. Reads both input fields and check if data
+     * provided by user is correct. After checking, creates new instance of generator model.
+     *
+     * @param event This is an event that occurs when user is pressing a button with submit function
+     */
     public void submit(ActionEvent event){
         isPlottable=false;
         try{
@@ -101,6 +133,14 @@ public class sceneController {
         }
     }
 
+    /**
+     * Method that check user input in first input field, if provided data is incorrect, throws exception and
+     * print information to user that he have to provide correct values.
+     *
+     * @throws notPositiveNumberException if provided values are not positive numbers, method thow this exception.
+     * @throws wrongAmountOfValuesException if user provides different quantity on numbers than 2, throws exception.
+     * @throws wrongIntervalException if interval is negative or equals to 0, throws exception.
+     */
     private void getIntervalNumbers()throws notPositiveNumberException, wrongAmountOfValuesException, wrongIntervalException {
         labelId=1;
         //conversion from string to Int, with extracting values with comma
@@ -121,6 +161,14 @@ public class sceneController {
     }
 
 
+    /**
+     * Method that check second user input field, if provided data is incorrect, throws exception and
+     * print information to user that he have to provide correct values.
+     *
+     * @throws notPositiveNumberException if provided values are not positive numbers, method thow this exception.
+     * @throws wrongAmountOfValuesException if user provides different quantity on numbers than 2, throws exception.
+     * @throws wrongSumOfPosibilitiesException if sum of passed posibilities is not equal 100.
+     */
     private void getVectorOfProbabilities()throws notPositiveNumberException, wrongAmountOfValuesException, wrongSumOfPosibilitiesException {
         labelId=3;
         //vectorOfProbabilities = Arrays.stream(probabilitiesVectorField.getText().split(",")).mapToInt(Integer::parseInt).toArray();
@@ -140,6 +188,9 @@ public class sceneController {
         probabilitiesErrorLabel.setText("");
     }
 
+    /**
+     * Draw chart with values generated in generatorModel and adjust scale.
+     */
     public void drawChart(){
         XYChart.Series series = new XYChart.Series();
         barChart.setLegendVisible(false);
@@ -154,16 +205,15 @@ public class sceneController {
         barChart.getData().addAll(series);
     }
 
-
-    public void goBackToFront(ActionEvent event){//go back btn on plot scene
+    /**
+     * Go back to front method, after pressing button is switching from second view to main view with input fields.
+     *
+     * @param event the event that occurs when backToFront button pressed.
+     */
+    public void goBackToFront(ActionEvent event){
         generator=null;
         barChart.getData().clear();
         barChart.layout();
         mainPage.toFront();
     }
-
-
-
-
-
 }

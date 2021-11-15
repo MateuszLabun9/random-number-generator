@@ -9,8 +9,12 @@ import java.io.IOException;
 
 /**
  * Main class which is creating a new scene and stage.
+ *
+ * @see sceneController
+ * @see generatorModel
  */
 public class RandomNumberGenerator extends Application {
+
     /**
      *
      * @param stage main stage on which view objects will base on.
@@ -26,6 +30,7 @@ public class RandomNumberGenerator extends Application {
     }
 
     /**
+     * The entry point of application.
      *
      * @param args arguments used when launching main function.
      */
