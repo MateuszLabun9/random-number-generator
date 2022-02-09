@@ -14,6 +14,8 @@ On screen will be displayed a bar graph with random generated values and amount 
  
 ![Java_chartscreen](https://user-images.githubusercontent.com/44081987/152648928-f0486d40-be0c-47d5-852f-a6f8d5e30066.png)
 
+# Error detection
+
 Additionaly, every user imput is checked if values are provided correctly, every time button submit is pressed, both inputs are validated.
 In case of invalid input, proper label is displayed with explenation which insput is wrong. 
 
